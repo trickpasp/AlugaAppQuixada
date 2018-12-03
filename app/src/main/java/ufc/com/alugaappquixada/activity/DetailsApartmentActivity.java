@@ -10,6 +10,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toolbar;
 
 import com.synnapps.carouselview.CarouselView;
@@ -22,8 +23,15 @@ import ufc.com.alugaappquixada.R;
 
 public class DetailsApartmentActivity extends Activity implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
 
-    Button buttonVisit;
-    CarouselView carouselView;
+    private Button buttonVisit;
+    private CarouselView carouselView;
+    private TextView textStreet;
+    private TextView textNumber;
+    private TextView textDistrict;
+    private TextView textCity;
+    private TextView textState;
+    private TextView textOwner;
+    private TextView textDescription;
 
     int[] sampleImages = {R.drawable.apart1, R.drawable.apart2, R.drawable.apart3};
 

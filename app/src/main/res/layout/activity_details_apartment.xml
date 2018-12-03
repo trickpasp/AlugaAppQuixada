@@ -93,6 +93,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="3dp"
                             android:layout_marginRight="3dp"
+                            android:text="Patrick"
                             android:textColor="@color/colorBlack"
                             android:textSize="12sp" />
 
