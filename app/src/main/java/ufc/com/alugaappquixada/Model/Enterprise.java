@@ -1,18 +1,26 @@
 package ufc.com.alugaappquixada.Model;
 
-public class Enterprise {
+import java.io.Serializable;
+
+public class Enterprise implements Serializable {
     private Integer id;
     private double latitute;
     private double longitute;
     private Owner owner;
     private String description;
+    private Address address;
 
-    public Enterprise(Integer id, double latitute, double longitute, Owner owner, String description) {
+
+    public Enterprise() {
+    }
+
+    public Enterprise(Integer id, double latitute, double longitute, Owner owner, Address address, String description) {
         this.id = id;
         this.latitute = latitute;
         this.longitute = longitute;
         this.owner = owner;
         this.description = description;
+        this.address = address;
     }
 
     public Integer getId() {
@@ -53,5 +61,13 @@ public class Enterprise {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
     }
 }

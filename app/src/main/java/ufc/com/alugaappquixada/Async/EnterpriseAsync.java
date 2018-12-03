@@ -12,14 +12,17 @@ import ufc.com.alugaappquixada.Model.Enterprise;
 import ufc.com.alugaappquixada.Model.MarkerInformation;
 import ufc.com.alugaappquixada.Model.Owner;
 import ufc.com.alugaappquixada.repository.EnterpriseRepository;
+import ufc.com.alugaappquixada.view.EnterpriseView;
 import ufc.com.alugaappquixada.view.MapView;
 
 public class EnterpriseAsync extends AsyncTask<Integer,Void,Void> {
     private MapView mapView;
+    private EnterpriseView enterpriseView;
     private EnterpriseRepository enterpriseRepository;
 
-    public EnterpriseAsync(MapView mapView){
+    public EnterpriseAsync(MapView mapView, EnterpriseView enterpriseView){
         this.mapView = mapView;
+        this.enterpriseView = enterpriseView;
         this.enterpriseRepository = ConfigRetrofit.getRetrofitConfig().create(EnterpriseRepository.class);
     }
 
@@ -34,8 +37,10 @@ public class EnterpriseAsync extends AsyncTask<Integer,Void,Void> {
                     Enterprise enterprise = response.body();
                     if(enterprise != null){
                         Owner owner = enterprise.getOwner();
-                        mapView.showInformationAboutMarkerClicked(MarkerInformation
+                        if(mapView != null)
+                            mapView.showInformationAboutMarkerClicked(MarkerInformation
                                 .create(owner.getEmail(),owner.getName(),enterprise.getDescription(),owner.getPhoneNumber().getNumber()));
+                        enterpriseView.getEnterprise(enterprise);
                     }
                 }
             }

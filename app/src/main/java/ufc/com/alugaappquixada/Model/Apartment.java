@@ -1,11 +1,9 @@
 package ufc.com.alugaappquixada.Model;
 
-import java.math.BigDecimal;
-
 public class Apartment {
 
     private double priceRental;
-    private Adress adress;
+    private Address address;
     private String description;
     private Owner owner;
 
@@ -17,12 +15,12 @@ public class Apartment {
         this.priceRental = priceRental;
     }
 
-    public Adress getAdress() {
-        return adress;
+    public Address getAddress() {
+        return address;
     }
 
-    public void setAdress(Adress adress) {
-        this.adress = adress;
+    public void setAddress(Address address) {
+        this.address = address;
     }
 
     public String getDescription() {

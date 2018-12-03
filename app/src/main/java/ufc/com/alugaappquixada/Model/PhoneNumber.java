@@ -1,6 +1,8 @@
 package ufc.com.alugaappquixada.Model;
 
-public class PhoneNumber {
+import java.io.Serializable;
+
+public class PhoneNumber implements Serializable {
     private String label;
     private String number;
 

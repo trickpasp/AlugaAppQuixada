@@ -1,7 +1,5 @@
 package ufc.com.alugaappquixada.activity;
 
-
-import android.app.ActionBar;
 import android.content.Intent;
 import android.os.Bundle;
 import android.app.Activity;
@@ -9,19 +7,23 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toolbar;
+import android.widget.Toast;
 
 import com.synnapps.carouselview.CarouselView;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 
 import java.util.Calendar;
+import java.util.logging.Logger;
 
+import ufc.com.alugaappquixada.Model.Enterprise;
 import ufc.com.alugaappquixada.R;
+import ufc.com.alugaappquixada.presenter.EnterprisePresenter;
+import ufc.com.alugaappquixada.presenter.EnterprisePresenterImpl;
+import ufc.com.alugaappquixada.view.EnterpriseView;
 
-public class DetailsApartmentActivity extends Activity implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
+public class DetailsApartmentActivity extends Activity implements EnterpriseView, DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
 
     private Button buttonVisit;
     private CarouselView carouselView;
@@ -32,6 +34,8 @@ public class DetailsApartmentActivity extends Activity implements DatePickerDial
     private TextView textState;
     private TextView textOwner;
     private TextView textDescription;
+    private Enterprise enterprise;
+    private EnterprisePresenter enterprisePresenter;
 
     int[] sampleImages = {R.drawable.apart1, R.drawable.apart2, R.drawable.apart3};
 
@@ -39,6 +43,18 @@ public class DetailsApartmentActivity extends Activity implements DatePickerDial
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details_apartment);
+        int id = getIntent().getIntExtra("enterpriseId", 0);
+        Toast.makeText(this, ""+id, Toast.LENGTH_SHORT).show();
+        enterprisePresenter = new EnterprisePresenterImpl(this);
+        enterprisePresenter.getEnterprise(id);
+
+        textNumber = (TextView) findViewById(R.id.textNumber);
+        textStreet = (TextView) findViewById(R.id.textStreet);
+        textDistrict = (TextView) findViewById(R.id.textDistrict);
+        textCity = (TextView) findViewById(R.id.textCity);
+        textState = (TextView) findViewById(R.id.textState);
+        textOwner = (TextView) findViewById(R.id.textOwner);
+        textDescription = (TextView) findViewById(R.id.textDescription);
 
         carouselView = (CarouselView) findViewById(R.id.caroselView);
         carouselView.setPageCount(sampleImages.length);
@@ -109,4 +125,14 @@ public class DetailsApartmentActivity extends Activity implements DatePickerDial
     }
 
 
+    @Override
+    public void getEnterprise(Enterprise enterprise) {
+        textNumber.setText("" + enterprise.getAddress().getNumber());
+        textStreet.setText(enterprise.getAddress().getStreet());
+        textDistrict.setText(enterprise.getAddress().getDistrict());
+        textCity.setText(enterprise.getAddress().getCity());
+        textState.setText(enterprise.getAddress().getState());
+        textOwner.setText(enterprise.getOwner().getName());
+        textDescription.setText(enterprise.getDescription());
+    }
 }

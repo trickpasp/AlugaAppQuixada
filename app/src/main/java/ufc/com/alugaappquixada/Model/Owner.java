@@ -1,8 +1,9 @@
 package ufc.com.alugaappquixada.Model;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Owner {
+public class Owner implements Serializable {
     private String name;
     private String email;
     private PhoneNumber phoneNumber;
@@ -28,14 +29,6 @@ public class Owner {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public Adress getAdress() {
-        return adress;
-    }
-
-    public void setAdress(Adress adress) {
-        this.adress = adress;
     }
 
     public PhoneNumber getPhoneNumber() {

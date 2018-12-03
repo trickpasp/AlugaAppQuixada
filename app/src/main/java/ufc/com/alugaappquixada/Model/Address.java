@@ -1,13 +1,14 @@
 package ufc.com.alugaappquixada.Model;
 
-public class Adress {
+import java.io.Serializable;
+
+public class Address implements Serializable {
 
     private int number;
     private String street;
     private String district;
     private String city;
     private String state;
-    private String cep;
 
     public int getNumber() {
         return number;
@@ -23,14 +24,6 @@ public class Adress {
 
     public void setStreet(String street) {
         this.street = street;
-    }
-
-    public String getCep() {
-        return cep;
-    }
-
-    public void setCep(String cep) {
-        this.cep = cep;
     }
 
     public String getDistrict() {

@@ -23,17 +23,20 @@ import ufc.com.alugaappquixada.repository.EnterpriseRepository;
 import ufc.com.alugaappquixada.service.EnterpriseService;
 import ufc.com.alugaappquixada.service.LocationService;
 import ufc.com.alugaappquixada.service.UserService;
+import ufc.com.alugaappquixada.view.EnterpriseView;
 import ufc.com.alugaappquixada.view.MapView;
 
 public class MapPresenterImpl implements MapPresenter {
     private MapView mapView;
     private Context ctx;
+    private EnterpriseView enterpriseView;
     private LocationService gpsLocation;
     private final String TAG_CLASS = "MapPresenterImpl_CLASS";
     private EnterpriseService enterpriseService;
     private UserService userService;
-    public MapPresenterImpl(Context ctx,MapView mapView){
+    public MapPresenterImpl(Context ctx,MapView mapView, EnterpriseView enterpriseView){
         this.mapView = mapView;
+        this.enterpriseView = enterpriseView;
         this.ctx = ctx;
         this.gpsLocation = new LocationService(ctx);
         this.enterpriseService = new EnterpriseService();
@@ -51,7 +54,7 @@ public class MapPresenterImpl implements MapPresenter {
         }
         */
 
-        new EnterpriseAsync(mapView).execute(tagMarker);
+        new EnterpriseAsync(mapView, enterpriseView).execute(tagMarker);
     }
     @Override
     public void seachAvailableApsNearByMe() {
