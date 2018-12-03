@@ -5,7 +5,6 @@ import java.util.List;
 public class Owner {
     private String name;
     private String email;
-    private Adress adress;
     private PhoneNumber phoneNumber;
     private List<Enterprise> enterprise;
 
