@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.synnapps.carouselview.CarouselView;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
+import com.wdullaer.materialdatetimepicker.time.Timepoint;
 
 import java.sql.Time;
 import java.text.DateFormat;
@@ -20,17 +21,15 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.logging.Logger;
 
 import ufc.com.alugaappquixada.Model.Enterprise;
 import ufc.com.alugaappquixada.Model.RequestForVisit;
-import ufc.com.alugaappquixada.Model.User;
 import ufc.com.alugaappquixada.R;
 import ufc.com.alugaappquixada.presenter.EnterprisePresenter;
 import ufc.com.alugaappquixada.presenter.EnterprisePresenterImpl;
 import ufc.com.alugaappquixada.presenter.RequestForVisitPresenter;
 import ufc.com.alugaappquixada.presenter.RequestForVisitPresenterImpl;
-import ufc.com.alugaappquixada.util.Util;
+import ufc.com.alugaappquixada.serviceAndroid.NotifyService;
 import ufc.com.alugaappquixada.view.EnterpriseView;
 import ufc.com.alugaappquixada.view.RequestForVisitView;
 
@@ -80,6 +79,8 @@ public class DetailsApartmentActivity extends Activity implements EnterpriseView
         buttonVisit = (Button) findViewById(R.id.buttonVisit);
         buttonVisit.setOnClickListener((view) -> {
             Calendar date = Calendar.getInstance();
+            Calendar dayCurrent = Calendar.getInstance();
+            dayCurrent.setTime(new Date());
 
             DatePickerDialog datePickerDialog = DatePickerDialog.newInstance(DetailsApartmentActivity.this
                 ,date.get(Calendar.YEAR)
@@ -87,6 +88,7 @@ public class DetailsApartmentActivity extends Activity implements EnterpriseView
                 ,date.get(Calendar.DAY_OF_MONTH));
             datePickerDialog.setTitle("Data da visita");
             datePickerDialog.show(getFragmentManager(), "DataPicker");
+            datePickerDialog.setMinDate(dayCurrent);
             datePickerDialog.setOnDismissListener( (dialogInterface) -> {
                 TimePickerDialog timePickerDialog = TimePickerDialog.newInstance(DetailsApartmentActivity.this
                         ,date.get(Calendar.HOUR_OF_DAY)
@@ -95,12 +97,14 @@ public class DetailsApartmentActivity extends Activity implements EnterpriseView
                 timePickerDialog.setTitle("Horário da visita");
 
                 timePickerDialog.show(getFragmentManager(), "TimePicker");
+                timePickerDialog.setMinTime(new Timepoint(8,0,0));
+                timePickerDialog.setMaxTime(18,0,0);
                 timePickerDialog.setOnDismissListener( (timeInterface) -> {
                     RequestForVisit requestForVisit = new RequestForVisit();
                     requestForVisit.setEnterprise(this.enterprise);
                     requestForVisit.setDate(this.date);
                     requestForVisit.setHour(this.hours);
-                    requestForVisit.setUser(Util.getUserLogged(this));
+//                    requestForVisit.setUser(Util.getUserLogged(this));
                     requestForVisitPresenter.saveRequestForVisit(requestForVisit);
                 });
             });
@@ -174,8 +178,15 @@ public class DetailsApartmentActivity extends Activity implements EnterpriseView
     @Override
     public void onCheckVisit(boolean check) {
         if (check) {
+            Intent intent = new Intent(this, NotifyService.class);
+            intent.putExtra("message", "Sua visita foi marcada para dia "+ this.date +" às " + this.hours + " horas");
+            intent.putExtra("title","Informações de locação");
+            DetailsApartmentActivity.this.startService(intent);
             Toast.makeText(this, "Visita marcada com sucesso!", Toast.LENGTH_SHORT).show();
         }else {
+            Intent intent = new Intent(this, NotifyService.class);
+            intent.putExtra("message", "Não foi possível marcar sua consulta!");
+            intent.putExtra("title","Informações de locação");
             Toast.makeText(this, "Foi imposível marcar sua visita!", Toast.LENGTH_SHORT).show();
         }
     }
